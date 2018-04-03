@@ -1,127 +1,69 @@
 import java.util.ArrayList;
-import java.util.Collections;
-
-/**
- * Main class
- *
- * @author Hieu Duong
- * @date 4/2/18
- */
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args){
-        String value = "A_DEAD_DAD_CEDED_A_BAD_BABE_A_BEADED_ABACA_BED";
 
-        char[] msgChars = value.toCharArray();
-        ArrayList<Character> chars = new ArrayList<>();
-        for(char c:value.toCharArray()){
-            if(!(chars.contains(c))){
-                chars.add(c);
+        ArrayHeap<HeapNode> minQ = new ArrayHeap(1,true);
+        String arrayValue = "A_DEAD_DAD_CEDED_A_BAD_BABE_A_BEADED_ABACA_BED";
+        //String arrayValue = "This is a sample string";
+
+        for(char c: arrayValue.toCharArray()){
+            String charInString = String.valueOf(c);
+
+            if(minQ.findValue(charInString) == -1){
+                int charCount = getCharCount(charInString, arrayValue);
+                HeapNode<String> node = new HeapNode<>(charInString, charCount);
+                minQ.enqueue(node, node.getP());
             }
         }
 
-        int[] countChars = new int[chars.size()];
-        for(int i=0; i<chars.size(); i++){
-            //System.out.println("Char: "+chars.get(i));
-            int count=0;
-            for(char c: value.toCharArray()){
-                if(chars.get(i).equals(c)){
-                    count++;
-                }
-            }
-            countChars[i] = count;
+        System.out.println("MinQ: "+minQ);
+        while (minQ.getSize() > 1){
+            HeapNode<String> leftN = minQ.dequeue();
+            HeapNode<String> rightN = minQ.dequeue();
+            HeapNode<String> parentN = new HeapNode<>(leftN, rightN);
+            minQ.enqueue(parentN, parentN.getP());
         }
 
+        HeapNode<String> rootTree = minQ.dequeue();
 
-        for(int i=0; i<countChars.length-1; i++){
-            for(int j=0; j<countChars.length-1; j++){
-                if(countChars[j]<countChars[j+1]){
-                    int temp = countChars[j];
-                    countChars[j] = countChars[j+1];
-                    countChars[j+1] = temp;
+        ArrayList<HeapCode> codeTable = new ArrayList<>();
+        getCodeTable(rootTree, "", codeTable);
 
-                    char tempChar = chars.get(j);
-                    chars.set(j, chars.get(j+1));
-                    chars.set(j+1, tempChar);
-                }
-            }
+        for(HeapCode code: codeTable){
+            System.out.println(code.getLetter()+": "+code.getCode());
+            arrayValue = arrayValue.replace(code.getLetter(), code.getCode());
         }
-
-
-        for(char c: chars){
-            System.out.print(c+" ");
-        }
-        System.out.println();
-        for(int i: countChars){
-            System.out.print(i+" ");
-        }
-        System.out.println("");
-
-        char c1 = chars.remove(chars.size()-1);
-        char c2 = chars.remove(chars.size()-1);
-
-        int val1 = countChars[countChars.length-1];
-        int val2 = countChars[countChars.length-2];
-
-        System.out.println("Left: "+c1+", "+val1);
-        System.out.println("Right: "+c2+", "+val2);
-
-
-        ArrayHeap<String> ar = new ArrayHeap(1,false);
-
-        ar.enqueue("C", 2);
-        ar.enqueue("B", 6);
-        ar.enqueue("CB", 8);
-
-        ArrayHeap<String> ar2 = new ArrayHeap(1,false);
-        ar2.enqueue("E", 7);
-        ar2.enqueue("ECB", 15);
-
-
-        System.out.println("AR: "+ar);
-        System.out.println("AR2: "+ar2);
-        ar2.addToExistTree(ar);
-        System.out.println("New AR2: "+ar2);
-        System.out.println("AR2 size: "+ar2.getSize());
-
-        ArrayHeap<String> ar3 = new ArrayHeap(1,false);
-
-        ar3.enqueue("D", 10);
-        ar3.enqueue("_", 10);
-        ar3.enqueue("_D", 20);
-
-        System.out.println("AR3: "+ar3);
-
-        ArrayHeap<String> ar4 = new ArrayHeap(1,false);
-        ar4.enqueue("A", 11);
-        ar4.enqueue("AECB", 26);
-
-        System.out.println("AR4: "+ar4);
-        ar4.addToExistTree(ar2);
-
-        System.out.println("New Ar4: "+ar4);
-
-        ArrayHeap<String> ar5 = new ArrayHeap(1,false);
-        ar5.enqueue("_DAECB", 46);
-        ar5.addToExistTree(ar3);
-
-        //ar5.addToExistTree(ar4);
-        System.out.println("AR5: "+ar5);
-
-        ArrayHeap<String> ar6 = new ArrayHeap(1,false);
-        ar6.enqueue("_DAECB", 46);
-        ar6.addToExistTree(ar4);
-        System.out.println("AR6: "+ar6);
-
+        System.out.println("Encoded: "+arrayValue);
     }
 
-    private static int countValue(String charToCount, String valueString) {
-        int count =0;
-        for(char c: valueString.toCharArray()){
-            if(charToCount.equals(String.valueOf(c))){
-                count++;
+    private static int getCharCount(String charInString, String arrayValue) {
+        int charCount = 0;
+        for(char c: arrayValue.toCharArray()){
+            if(String.valueOf(c).equals(charInString)){
+                charCount++;
             }
         }
-        return count;
+        return charCount;
+    }
+
+    private static int computeFactorial(int i) {
+        if(i==0) return 1;
+        else{
+            return i*computeFactorial(i-1);
+        }
+    }
+
+    private static void getCodeTable(HeapNode x, String path, ArrayList<HeapCode> codeTB) {
+        if (x.isLeaf()) {
+            //System.out.println("Data: "+x.getD() +", path: "+path);
+            HeapCode code = new HeapCode((String.valueOf(x.getD())), path);
+            codeTB.add(code);
+            return;
+        }
+
+        getCodeTable(x.getNodeLeft(), path+"0", codeTB);
+        getCodeTable(x.getNodeRight(), path+"1", codeTB);
     }
 }
