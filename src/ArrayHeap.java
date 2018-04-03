@@ -79,31 +79,41 @@ public class ArrayHeap<T> {
 		return toRet;
 	}
 
-	public HeapNode remove(){
-		if(lastSpot-1>-1){
-			HeapNode node = (HeapNode)heapArr[--lastSpot];
-			return node;
-		}
-		else return null;
-	}
-
-	public int findValue(String value){
-		int index = -1;
+	public int searchHeap(T searchValue){
+		int index=-1;
 		for(int i=0; i<lastSpot; i++){
-			HeapNode node = (HeapNode)heapArr[i];
-			if(node.getD().equals(value)){
+			T toRet = ((HeapNode<T>)heapArr[i]).getD();
+			if(toRet.equals(searchValue)){
 				index = i;
 			}
 		}
 		return index;
 	}
 
-	public void addToExistTree(ArrayHeap ar){
-		for(int i=0; i<ar.lastSpot; i++){
-			HeapNode node = (HeapNode)ar.heapArr[i];
-			//System.out.println("Node: "+node.getD()+", "+node.getP());
-			enqueue((T)node.getD(), node.getP());
+	public int findValue(String value){
+		int index=-1;
+		for(int i=0; i<lastSpot; i++){
+			HeapNode node = (HeapNode) heapArr[i];
+			HeapNode n1 = (HeapNode)node.getD();
+			if(n1.getD().equals(value)){
+				index = i;
+			}
 		}
+		return index;
+	}
+
+	public HeapNode getHeapData(int index){
+		if(index>-1){
+			if(index <lastSpot) {
+				if (((HeapNode<T>) heapArr[index]) != null) {
+					return (HeapNode<T>) heapArr[index];
+				} else {
+					return null;
+				}
+			}else{
+				return null;
+			}
+		}else return null;
 	}
 	public int getSize(){return lastSpot;}
 	
@@ -113,59 +123,5 @@ public class ArrayHeap<T> {
 			s+=heapArr[i]+"\n";
 		return s;
 	}
-	
-	
-	/*
-	class HeapNode<T>{
-		double priority;
-		T data;
-		public HeapNode(T datum, double priority){
-			this.priority=priority;
-			data=datum;
-		}
-		
-		public double getP(){return priority;}
-		public T getD(){return data;}
-		public String toString(){
-			return "("+priority+") "+data;
-		}
-	}
-	*/
-
-	public static void main(String[] args){
-		ArrayHeap<String> ar = new ArrayHeap(1,false);
-		ArrayHeap<String> ar2 = new ArrayHeap(1,false);
-		/*
-		ar.enqueue("Hi",5);
-		ar.enqueue("Good",6);
-		ar.enqueue("test",3);
-		ar.enqueue("this",1);
-		ar.enqueue("What",5);
-		ar.enqueue("Hello",7);
-		ar.enqueue("Bye",0);
-		ar.enqueue("YAY",2);
-		System.out.println("--"+ar.dequeue()+"--");
-
-		*/
-
-		ar.enqueue("C",2);
-		ar.enqueue("B",6);
-		ar.enqueue("CB",8);
-
-		ar2.enqueue("ECB",15);
-		ar2.enqueue("E",7);
-
-
-		ar.enqueue("_",10);
-		ar.enqueue("D",10);
-		ar.enqueue("_D",20);
-
-		ar.enqueue("A",11);
-		ar.enqueue("AECB",26);
-		ar.enqueue("_DAECB",46);
-
-		System.out.println(ar);
-	}
-
 
 }
