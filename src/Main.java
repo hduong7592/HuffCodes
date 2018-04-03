@@ -46,14 +46,7 @@ public class Main {
             }
         }
         return charCount;
-    }
-
-    private static int computeFactorial(int i) {
-        if(i==0) return 1;
-        else{
-            return i*computeFactorial(i-1);
-        }
-    }
+    }    
 
     private static void getCodeTable(HeapNode x, String path, ArrayList<HeapCode> codeTB) {
         if (x.isLeaf()) {
