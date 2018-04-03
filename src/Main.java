@@ -5,7 +5,9 @@ public class Main {
     public static void main(String[] args){
 
         ArrayHeap<HeapNode> minQ = new ArrayHeap(1,true);
-        String arrayValue = "A_DEAD_DAD_CEDED_A_BAD_BABE_A_BEADED_ABACA_BED";
+        String originalString = "This is a sample test string";
+        //String originalString = "A_DEAD_DAD_CEDED_A_BAD_BABE_A_BEADED_ABACA_BED";
+        String arrayValue = originalString;
         //String arrayValue = "This is a sample string";
 
         for(char c: arrayValue.toCharArray()){
@@ -36,7 +38,32 @@ public class Main {
             arrayValue = arrayValue.replace(code.getLetter(), code.getCode());
         }
         System.out.println("Encoded: "+arrayValue);
+
+        String decodeString = "";
+
+        System.out.println("Encoded: "+ originalString);
+
+        HeapNode<String> node = rootTree;
+        HeapNode<String> nextNode = null;
+        for(int i=0; i<arrayValue.length();i++){
+            if(arrayValue.charAt(i)=='0'){
+               nextNode = node.getNodeLeft();
+
+            }else if(arrayValue.charAt(i)=='1'){
+               nextNode = node.getNodeRight();
+            }
+            if(nextNode.isLeaf()){
+                //System.out.print(nextNode.getD());
+                decodeString+=nextNode.getD();
+                node = rootTree;
+            }else{
+                node = nextNode;
+            }
+        }
+
+        System.out.println("Decoded: "+decodeString);
     }
+
 
     private static int getCharCount(String charInString, String arrayValue) {
         int charCount = 0;
@@ -46,7 +73,7 @@ public class Main {
             }
         }
         return charCount;
-    }    
+    }
 
     private static void getCodeTable(HeapNode x, String path, ArrayList<HeapCode> codeTB) {
         if (x.isLeaf()) {
