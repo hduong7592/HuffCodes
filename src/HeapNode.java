@@ -1,3 +1,10 @@
+/**
+ * HeapNode class
+ *
+ * @author Hieu Duong
+ * @date 4/1/18
+ */
+
 public class HeapNode<T> {
     double priority;
     T data;
@@ -29,10 +36,9 @@ public class HeapNode<T> {
     }
 
     public boolean isLeaf(){
-        if(nodeLeft==null&& nodeRight==null){
-            return true;
-        }else return false;
+        return (nodeLeft==null && nodeRight==null);
     }
+
     public double getP(){return priority;}
     public T getD(){return data;}
     public String toString(){

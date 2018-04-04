@@ -22,7 +22,7 @@ public class TestHuffman{
 			System.out.println("\t"+e.getMessage());
 			System.exit(1);
 		}
-		
+		System.out.println("String: "+forGeneratingCounts);
 				
 		//This will construct the tree/lookup table
 		HuffEncodable myHuffEncoding = new HuffCodes(); //TODO: HuffCodes is the name of your file

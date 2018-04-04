@@ -79,17 +79,12 @@ public class ArrayHeap<T> {
 		return toRet;
 	}
 
-	public int searchHeap(T searchValue){
-		int index=-1;
-		for(int i=0; i<lastSpot; i++){
-			T toRet = ((HeapNode<T>)heapArr[i]).getD();
-			if(toRet.equals(searchValue)){
-				index = i;
-			}
-		}
-		return index;
-	}
 
+	/**
+	 * Method to find Node in Heap base on input value
+	 * @param value
+	 * @return
+	 */
 	public int findValue(String value){
 		int index=-1;
 		for(int i=0; i<lastSpot; i++){
@@ -102,19 +97,7 @@ public class ArrayHeap<T> {
 		return index;
 	}
 
-	public HeapNode getHeapData(int index){
-		if(index>-1){
-			if(index <lastSpot) {
-				if (((HeapNode<T>) heapArr[index]) != null) {
-					return (HeapNode<T>) heapArr[index];
-				} else {
-					return null;
-				}
-			}else{
-				return null;
-			}
-		}else return null;
-	}
+
 	public int getSize(){return lastSpot;}
 	
 	public String toString(){
@@ -123,5 +106,4 @@ public class ArrayHeap<T> {
 			s+=heapArr[i]+"\n";
 		return s;
 	}
-
 }

@@ -1,8 +1,15 @@
-public class HeapCode {
+/**
+ * EncodeData class
+ *
+ * @author Hieu Duong
+ * @date 4/1/18
+ */
+
+public class EncodeData {
     private String letter;
     private String code;
 
-    public HeapCode(String letter, String code) {
+    public EncodeData(String letter, String code) {
         this.letter = letter;
         this.code = code;
     }
