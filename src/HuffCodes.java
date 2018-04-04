@@ -8,13 +8,14 @@ import java.util.ArrayList;
  */
 
 public class HuffCodes implements HuffEncodable {
-    public ArrayList<EncodeData> codeTable;
-    public HeapNode<String> rootTree;
+    ArrayList<EncodeData> codeTable;
+    HeapNode<String> rootTree;
 
     public HuffCodes() {
         codeTable = new ArrayList<>();
         rootTree = null;
     }
+    
     public void constructEncoding(String forCounts){
         //Create tree
         ArrayHeap<HeapNode> minQ = new ArrayHeap(1,true);
