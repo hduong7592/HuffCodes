@@ -15,7 +15,7 @@ public class HuffCodes implements HuffEncodable {
         codeTable = new ArrayList<>();
         rootTree = null;
     }
-    
+
     public void constructEncoding(String forCounts){
         //Create tree
         ArrayHeap<HeapNode> minQ = new ArrayHeap(1,true);
@@ -49,7 +49,7 @@ public class HuffCodes implements HuffEncodable {
 
             //Get the binary code table base on the tree
             //Trace the tree until find the leaf and get the path to that leaf
-            getCodeTable(rootTree, "", codeTable);
+            buildCodeTable(rootTree, "", codeTable);
 
             //displayCodeTable(codeTable);
         }
@@ -131,7 +131,7 @@ public class HuffCodes implements HuffEncodable {
      * @param codedValue
      * @param codeTB
      */
-    private void getCodeTable(HeapNode node, String codedValue, ArrayList<EncodeData> codeTB) {
+    private void buildCodeTable(HeapNode node, String codedValue, ArrayList<EncodeData> codeTB) {
         if (node.isLeaf()) {
             //System.out.println("Data: "+x.getD() +", path: "+path);
             EncodeData data = new EncodeData((String.valueOf(node.getD())), codedValue);
@@ -139,7 +139,7 @@ public class HuffCodes implements HuffEncodable {
             return;
         }
 
-        getCodeTable(node.getNodeLeft(), codedValue+"0", codeTB);
-        getCodeTable(node.getNodeRight(), codedValue+"1", codeTB);
+        buildCodeTable(node.getNodeLeft(), codedValue+"0", codeTB);
+        buildCodeTable(node.getNodeRight(), codedValue+"1", codeTB);
     }
 }
